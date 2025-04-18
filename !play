@@ -1,0 +1,91 @@
+$nomention
+$if[$isSlash==true]
+$var[MS;$message[song]]
+$else
+$var[MS;$message]
+$endif
+
+$onlyIf[$var[MS]!=;Type the name of a song.]
+$var[ID;$sendMessage[Searching **$var[MS]** on YouTube.;yes]]
+$suppressErrors[Unexpected error, please try again later.
+-# Remember to search properly since the YouTube API is not like the YouTube search engine.]
+
+$httpGet[https://api.agatz.xyz/api/ytplay?message=$url[encode;$var[MS]]]
+$var[name;$httpResult[data;audio;title]]
+$var[url;$httpResult[data;audio;url]]
+$var[author;$httpResult[data;info;author;name]]
+$var[long;$httpResult[data;info;duration]]
+$var[image;$httpResult[data;info;thumbnail]]
+$var[youtube;$httpResult[data;info;url]]
+$var[authorURL;$httpResult[data;info;author;url]]
+
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/music;{
+  "token": "$getVar[TOKEN]",
+  "bot_id": "$botID",
+  "user_id": "$authorID",
+  "guild_id": "$guildID",
+  "url": "$var[url]",
+  "name": "$var[name]"
+}]
+$if[$httpResult[error]==Límite de canciones alcanzado]
+$description[❌ **$httpResult[error]**
+-# $httpResult[message]]
+$else
+$if[$httpResult[position]==1]
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/play;{
+    "token": "$getVar[TOKEN]",
+    "bot_id": "$botID",
+    "user_id": "$authorID",
+    "guild_id": "$guildID"
+}]
+$var[conect;$httpResult[error]]
+$if[$var[conect]==El usuario no está en un canal de voz]
+$description[❌ **$httpResult[error]**]
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/stop;{
+    "token": "$getVar[TOKEN]",
+    "bot_id": "$botID",
+    "user_id": "$authorID",
+    "guild_id": "$guildID"
+}]
+$else
+$nomention
+$author[$var[author]]
+$authorURL[$var[authorURL]]
+$title[Music added to the queue]
+$description[* **Name:** $var[name]
+  - **Author:** $var[author]
+  - **Duration:** $var[long]
+  - **URL:** $var[youtube]]
+$thumbnail[$var[image]]
+$image[https://edgabot.lucnodes.es/api/image/music/?name=$url[encode;$var[name]]&autor=$url[encode;$var[author]]&image=$var[image]&time=$var[long]]
+$footer[Akiomae APIS]
+$addTimestamp
+$addButton[yes;stop;;secondary;no;⏹️]
+$addButton[no;ante;;secondary;no;⏮️]
+$addButton[no;pause;;secondary;no;⏸️]
+$addButton[no;skip;;secondary;no;⏭️]
+$addButton[no;list;;secondary;no;🗒️]
+$addButton[yes;info;;secondary;no;ℹ️]
+$addButton[no;vol;;secondary;no;🔊]
+$reply
+$endif
+$elseif[$httpResult[position]>=2]
+$nomention
+$author[$var[author]]
+$authorURL[$var[authorURL]]
+$title[Music added to the queue]
+$description[* **Name:** $var[name]
+  - **Author:** $var[author]
+  - **Duration:** $var[long]
+  - **URL:** $var[youtube]]
+$thumbnail[$var[image]]
+$image[https://edgabot.lucnodes.es/api/image/music/?name=$url[encode;$var[name]]&autor=$url[encode;$var[author]]&image=$var[image]&time=$var[long]]
+$footer[Akiomae APIS]
+$addTimestamp
+$reply
+$endif
+$endif
+
+$deleteMessage[$channelID;$var[ID]]
+$suppressErrors[Unexpected error, please try again later.
+-# Remember to search properly since the YouTube API is not like the YouTube search engine.]

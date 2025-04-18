@@ -41,7 +41,7 @@ $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/play;{
 $var[conect;$httpResult[error]]
 $if[$var[conect]==El usuario no está en un canal de voz]
 $description[❌ **$httpResult[error]**]
-$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/stop;{
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/play;{
     "token": "$getVar[TOKEN]",
     "bot_id": "$botID",
     "user_id": "$authorID",

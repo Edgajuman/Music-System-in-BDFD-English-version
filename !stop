@@ -1,0 +1,13 @@
+$nomention
+
+$var[ID;$sendMessage[Stopping music...;yes]]
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/stop;{
+    "token": "$getVar[TOKEN]",
+    "bot_id": "$botID",
+    "user_id": "$authorID",
+    "guild_id": "$guildID"
+}]
+$description[Music stopped and bot successfully disconnected
+-# The playlist has been reset.]
+$removeAllComponents
+$deleteMessage[$channelID;$var[ID]]

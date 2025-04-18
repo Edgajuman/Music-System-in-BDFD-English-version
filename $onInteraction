@@ -1,0 +1,202 @@
+$suppressErrors
+$if[$customID==pause]
+$nomention
+$var[ID;$sendMessage[Pausing music...;yes]]
+$httpGet[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/queue?bot_id=$botID&guild_id=$guildID]
+$var[music;$httpResult[currentTrack;name]]
+
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/pause;{
+    "token": "$getVar[TOKEN]",
+    "bot_id": "$botID",
+    "user_id": "$authorID",
+    "guild_id": "$guildID"
+}]
+$title[Slow music.]
+$description[**Current music:** $var[music]]
+$footer[Akiomae APIS]
+$addTimestamp
+$removeAllComponents
+$addButton[yes;stop;;secondary;no;⏹️]
+$addButton[no;ante;;secondary;no;⏮️]
+$addButton[no;resume;;secondary;no;▶️]
+$addButton[no;skip;;secondary;no;⏭️]
+$addButton[no;list;;secondary;no;🗒️]
+$addButton[yes;info;;secondary;no;ℹ️]
+$addButton[no;vol;;secondary;no;🔊]
+$removeAllComponents
+$deleteMessage[$channelID;$var[ID]]
+$endif
+
+$if[$customID==resume]
+$nomention
+$var[ID;$sendMessage[Resuming music...;yes]]
+$httpGet[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/queue?bot_id=$botID&guild_id=$guildID]
+$var[music;$httpResult[currentTrack;name]]
+
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/resume;{
+    "token": "$getVar[TOKEN]",
+    "bot_id": "$botID",
+    "user_id": "$authorID",
+    "guild_id": "$guildID"
+}]
+$title[Music resumed.]
+$description[**Current music:** $var[music]]
+$footer[Akiomae APIS]
+$addTimestamp
+$removeAllComponents
+$addButton[yes;stop;;secondary;no;⏹️]
+$addButton[no;ante;;secondary;no;⏮️]
+$addButton[no;pause;;secondary;no;⏸️]
+$addButton[no;skip;;secondary;no;⏭️]
+$addButton[no;list;;secondary;no;🗒️]
+$addButton[yes;info;;secondary;no;ℹ️]
+$addButton[no;vol;;secondary;no;🔊]
+$removeAllComponents
+$deleteMessage[$channelID;$var[ID]]
+$endif
+
+$if[$customID==stop]
+$nomention
+
+$var[ID;$sendMessage[Stopping music...;yes]]
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/stop;{
+    "token": "$getVar[TOKEN]",
+    "bot_id": "$botID",
+    "user_id": "$authorID",
+    "guild_id": "$guildID"
+}]
+$description[Music stopped and bot successfully disconnected
+-# The playlist has been reset.]
+$footer[Akiomae APIS]
+$addTimestamp
+$removeAllComponents
+$deleteMessage[$channelID;$var[ID]]
+$endif
+
+$if[$customID==skip]
+$nomention
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/sig;{
+    "token": "$getVar[TOKEN]",
+    "bot_id": "$botID",
+    "user_id": "$authorID",
+    "guild_id": "$guildID"
+}]
+$if[$httpResult[error]==Límite de saltos alcanzado]
+$description[**❌ $httpResult[message]**]
+$else
+$title[Playing next music.]
+$description[**$httpResult[currentTrack;name]**]
+$footer[Akiomae APIS]
+$addTimestamp
+$removeAllComponents
+$addButton[yes;stop;;secondary;no;⏹️]
+$addButton[no;ante;;secondary;no;⏮️]
+$addButton[no;pause;;secondary;no;⏸️]
+$addButton[no;skip;;secondary;no;⏭️]
+$addButton[no;list;;secondary;no;🗒️]
+$addButton[yes;info;;secondary;no;ℹ️]
+$addButton[no;vol;;secondary;no;🔊]
+$removeAllComponents
+$endif
+$endif
+
+$if[$customID==ante]
+$nomention
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/ante;{
+    "token": "$getVar[TOKEN]",
+    "bot_id": "$botID",
+    "user_id": "$authorID",
+    "guild_id": "$guildID"
+}]
+$if[$httpResult[error]==Función no disponible]
+$description[**❌ $httpResult[message]**]
+$else
+$title[Playing previous music.]
+$description[**$httpResult[currentTrack;name]**]
+$footer[Akiomae APIS]
+$addTimestamp
+$removeAllComponents
+$addButton[yes;stop;;secondary;no;⏹️]
+$addButton[no;ante;;secondary;no;⏮️]
+$addButton[no;pause;;secondary;no;⏸️]
+$addButton[no;skip;;secondary;no;⏭️]
+$addButton[no;list;;secondary;no;🗒️]
+$addButton[yes;info;;secondary;no;ℹ️]
+$addButton[no;vol;;secondary;no;🔊]
+$removeAllComponents
+$endif
+$endif
+
+$if[$customID==list]
+$ephemeral
+$nomention
+$removeAllComponents
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/list;{
+    "bot_id": "$botID",
+    "guild_id": "$guildID"
+}]
+
+$title[Playlist]
+$footer[Akiomae APIS]
+$addTimestamp
+$description[$if[$httpResult[songs;0;name]==]There is no music in the list yet.$else* $httpResult[songs;0;name]$endif
+$if[$httpResult[songs;1;name]==]$else* $httpResult[songs;1;name]$endif
+$if[$httpResult[songs;2;name]==]$else* $httpResult[songs;2;name]$endif
+$if[$httpResult[songs;3;name]==]$else* $httpResult[songs;3;name]$endif
+$if[$httpResult[songs;4;name]==]$else* $httpResult[songs;4;name]$endif
+$if[$httpResult[songs;5;name]==]$else* $httpResult[songs;5;name]$endif
+$if[$httpResult[songs;6;name]==]$else* $httpResult[songs;6;name]$endif
+$if[$httpResult[songs;7;name]==]$else* $httpResult[songs;7;name]$endif
+$if[$httpResult[songs;8;name]==]$else* $httpResult[songs;8;name]$endif
+$if[$httpResult[songs;9;name]==]$else* $httpResult[songs;9;name]$endif
+$if[$httpResult[songs;10;name]==]$else* $httpResult[songs;10;name]$endif]
+
+$if[$httpResult[songCount]>=11]
+$addButton[no;music-ante;;primary;yes;:arrow_backward:]
+$addButton[no;music-sig;;primary;no;:arrow_forward:]
+$elseif[$httpResult[songCount]<=11]
+$addButton[no;music-ante;;primary;yes;:arrow_backward:]
+$addButton[no;music-sig;;primary;yes;:arrow_forward:]
+$endif
+$endif
+
+$if[$customID==info]
+$ephemeral
+$nomention
+$removeAllComponents
+$httpGet[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/queue?bot_id=$botID&guild_id=$guildID]
+
+$title[Current music information.]
+$footer[Akiomae APIS]
+$addTimestamp
+$description[* **Name:** $httpResult[currentTrack;name]
+* **Extension:** $httpResult[currentTrack;extension]
+* **Date:** $httpResult[currentTrack;addedAt]]
+$endif
+
+$if[$customID==vol]
+$ephemeral
+$nomention
+$removeAllComponents
+
+$title[Adjust the volume of the music.]
+$footer[Akiomae APIS]
+$addTimestamp
+$addButton[yes;vol-10;10%;secondary;no;]
+$addButton[no;vol-30;30%;secondary;no;]
+$addButton[no;vol-50;50%;secondary;no;]
+$addButton[no;vol-70;70%;secondary;no;]
+$addButton[no;vol-100;100%;secondary;no;]
+$addButton[yes;vol-1;1%;danger;no;]
+$endif
+
+$textSplit[$customID;-]
+$if[$splitText[1]==vol]
+$ephemeral
+$nomention
+$removeAllComponents
+$httpGet[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/volumen?bot_id=$botID&guild_id=$guildID&volumen=$splitText[2]]
+
+$title[:loud_sound: Volume adjusted :headphones:]
+$description[Music volume has been set to `$splitText[2]%`]
+$endif

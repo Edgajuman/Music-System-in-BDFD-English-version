@@ -1,0 +1,12 @@
+$nomention
+$argsCheck[>1;Please enter a number to adjust the volume, minimum 1 and maximum 100
+> Example: `!vol 50`]
+
+$if[$isNumber[$message[1]]==false]
+$description[The input is not a number]
+$else
+$httpGet[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/volumen?bot_id=$botID&guild_id=$guildID&volumen=$message[1]]
+
+$title[🔊 Volume adjusted 🎧]
+$description[The music volume has been set to `$message[1]%`]
+$endif

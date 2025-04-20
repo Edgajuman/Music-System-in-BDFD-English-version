@@ -29,8 +29,8 @@ $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/music;{
   "name": "$var[name]"
 }]
 $if[$httpResult[error]==Límite de canciones alcanzado]
-$description[❌ **$httpResult[error]**
--# $httpResult[message]]
+$description[❌ **Song limit reached**
+-# Non-premium bots have a maximum of 5 songs, and premium bots have a maximum of 20.]
 $else
 $if[$httpResult[position]==1]
 $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/play;{
@@ -41,7 +41,7 @@ $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/play;{
 }]
 $var[conect;$httpResult[error]]
 $if[$var[conect]==El usuario no está en un canal de voz]
-$description[❌ **$httpResult[error]**]
+$description[❌ **You are not in a voice channel**]
 $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/stop;{
     "token": "$getVar[TOKEN]",
     "bot_id": "$botID",

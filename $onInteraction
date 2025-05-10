@@ -16,13 +16,15 @@ $description[**Current music:** $var[music]]
 $footer[Akiomae APIS]
 $addTimestamp
 $removeAllComponents
-$addButton[yes;stop;;secondary;no;⏹️]
-$addButton[no;ante;;secondary;no;⏮️]
-$addButton[no;resume;;secondary;no;▶️]
-$addButton[no;skip;;secondary;no;⏭️]
-$addButton[no;list;;secondary;no;🗒️]
-$addButton[yes;info;;secondary;no;ℹ️]
-$addButton[no;vol;;secondary;no;🔊]
+$addButton[yes;stop;Stop;danger;no;:stop_button:]
+$addButton[no;ante;Previous;secondary;no;:rewind:]
+$addButton[no;resume;Resume;secondary;no;▶️]
+$addButton[no;skip;Skip;secondary;no;:fast_forward:]
+$addButton[no;list;List;secondary;no;:notepad_spiral:]
+$addButton[yes;info;Info;secondary;no;:information_source:]
+$addButton[no;volu;Volume;secondary;no;:loud_sound:]
+$addButton[no;down;Download;primary;no;:inbox_tray:]
+$addButton[no;musicAI;AI;success;no;:brain:]
 $removeAllComponents
 $deleteMessage[$channelID;$var[ID]]
 $endif
@@ -44,13 +46,15 @@ $description[**Current music:** $var[music]]
 $footer[Akiomae APIS]
 $addTimestamp
 $removeAllComponents
-$addButton[yes;stop;;secondary;no;⏹️]
-$addButton[no;ante;;secondary;no;⏮️]
-$addButton[no;pause;;secondary;no;⏸️]
-$addButton[no;skip;;secondary;no;⏭️]
-$addButton[no;list;;secondary;no;🗒️]
-$addButton[yes;info;;secondary;no;ℹ️]
-$addButton[no;vol;;secondary;no;🔊]
+$addButton[yes;stop;Stop;danger;no;:stop_button:]
+$addButton[no;ante;Previous;secondary;no;:rewind:]
+$addButton[no;pause;Pause;secondary;no;:pause_button:]
+$addButton[no;skip;Skip;secondary;no;:fast_forward:]
+$addButton[no;list;List;secondary;no;:notepad_spiral:]
+$addButton[yes;info;Info;secondary;no;:information_source:]
+$addButton[no;volu;Volume;secondary;no;:loud_sound:]
+$addButton[no;down;Download;primary;no;:inbox_tray:]
+$addButton[no;musicAI;AI;success;no;:brain:]
 $removeAllComponents
 $deleteMessage[$channelID;$var[ID]]
 $endif
@@ -70,6 +74,7 @@ $description[Music stopped and bot successfully disconnected
 $footer[Akiomae APIS]
 $addTimestamp
 $removeAllComponents
+$setServerVar[musicMS;]
 $deleteMessage[$channelID;$var[ID]]
 $endif
 
@@ -82,20 +87,23 @@ $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/sig;{
     "guild_id": "$guildID"
 }]
 $if[$httpResult[error]==Límite de saltos alcanzado]
-$description[**❌ $httpResult[message]**]
+$description[**❌ Hop limit reached**
+-# You can use Skips again in 30 minutes.]
 $else
 $title[Playing next music.]
 $description[**$httpResult[currentTrack;name]**]
 $footer[Akiomae APIS]
 $addTimestamp
 $removeAllComponents
-$addButton[yes;stop;;secondary;no;⏹️]
-$addButton[no;ante;;secondary;no;⏮️]
-$addButton[no;pause;;secondary;no;⏸️]
-$addButton[no;skip;;secondary;no;⏭️]
-$addButton[no;list;;secondary;no;🗒️]
-$addButton[yes;info;;secondary;no;ℹ️]
-$addButton[no;vol;;secondary;no;🔊]
+$addButton[yes;stop;Stop;danger;no;:stop_button:]
+$addButton[no;ante;Previous;secondary;no;:rewind:]
+$addButton[no;pause;Pause;secondary;no;:pause_button:]
+$addButton[no;skip;Skip;secondary;no;:fast_forward:]
+$addButton[no;list;List;secondary;no;:notepad_spiral:]
+$addButton[yes;info;Info;secondary;no;:information_source:]
+$addButton[no;volu;Volume;secondary;no;:loud_sound:]
+$addButton[no;down;Download;primary;no;:inbox_tray:]
+$addButton[no;musicAI;AI;success;no;:brain:]
 $removeAllComponents
 $endif
 $endif
@@ -109,20 +117,22 @@ $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/ante;{
     "guild_id": "$guildID"
 }]
 $if[$httpResult[error]==Función no disponible]
-$description[**❌ $httpResult[message]**]
+$description[**❌ Feature not available for NON-PREMIUM bots**]
 $else
 $title[Playing previous music.]
 $description[**$httpResult[currentTrack;name]**]
 $footer[Akiomae APIS]
 $addTimestamp
 $removeAllComponents
-$addButton[yes;stop;;secondary;no;⏹️]
-$addButton[no;ante;;secondary;no;⏮️]
-$addButton[no;pause;;secondary;no;⏸️]
-$addButton[no;skip;;secondary;no;⏭️]
-$addButton[no;list;;secondary;no;🗒️]
-$addButton[yes;info;;secondary;no;ℹ️]
-$addButton[no;vol;;secondary;no;🔊]
+$addButton[yes;stop;Stop;danger;no;:stop_button:]
+$addButton[no;ante;Previous;secondary;no;:rewind:]
+$addButton[no;pause;Pause;secondary;no;:pause_button:]
+$addButton[no;skip;Skip;secondary;no;:fast_forward:]
+$addButton[no;list;List;secondary;no;:notepad_spiral:]
+$addButton[yes;info;Info;secondary;no;:information_source:]
+$addButton[no;volu;Volume;secondary;no;:loud_sound:]
+$addButton[no;down;Download;primary;no;:inbox_tray:]
+$addButton[no;musicAI;AI;success;no;:brain:]
 $removeAllComponents
 $endif
 $endif
@@ -152,11 +162,11 @@ $if[$httpResult[songs;9;name]==]$else* $httpResult[songs;9;name]$endif
 $if[$httpResult[songs;10;name]==]$else* $httpResult[songs;10;name]$endif]
 
 $if[$httpResult[songCount]>=11]
-$addButton[no;music-ante;;primary;yes;:arrow_backward:]
-$addButton[no;music-sig;;primary;no;:arrow_forward:]
+$addButton[no;music-ante;;primary;yes;◀️]
+$addButton[no;music-sig;;primary;no;▶️]
 $elseif[$httpResult[songCount]<=11]
-$addButton[no;music-ante;;primary;yes;:arrow_backward:]
-$addButton[no;music-sig;;primary;yes;:arrow_forward:]
+$addButton[no;music-ante;;primary;yes;◀️]
+$addButton[no;music-sig;;primary;yes;▶️]
 $endif
 $endif
 
@@ -174,7 +184,7 @@ $description[* **Name:** $httpResult[currentTrack;name]
 * **Date:** $httpResult[currentTrack;addedAt]]
 $endif
 
-$if[$customID==vol]
+$if[$customID==volu]
 $ephemeral
 $nomention
 $removeAllComponents
@@ -182,12 +192,12 @@ $removeAllComponents
 $title[Adjust the volume of the music.]
 $footer[Akiomae APIS]
 $addTimestamp
-$addButton[yes;vol-10;10%;secondary;no;]
-$addButton[no;vol-30;30%;secondary;no;]
-$addButton[no;vol-50;50%;secondary;no;]
-$addButton[no;vol-70;70%;secondary;no;]
-$addButton[no;vol-100;100%;secondary;no;]
-$addButton[yes;vol-1;1%;danger;no;]
+$addButton[yes;vol-10;10%;secondary;no]
+$addButton[no;vol-30;30%;secondary;no]
+$addButton[no;vol-50;50%;secondary;no]
+$addButton[no;vol-70;70%;secondary;no]
+$addButton[no;vol-100;100%;secondary;no]
+$addButton[yes;vol-1;1%;danger;no]
 $endif
 
 $textSplit[$customID;-]
@@ -199,4 +209,71 @@ $httpGet[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/volumen?bot_id=$botID
 
 $title[:loud_sound: Volume adjusted :headphones:]
 $description[Music volume has been set to `$splitText[2]%`]
+$endif
+
+$if[$customID==down]
+$nomention
+$var[ID;$sendMessage[Downloading music...;yes]]
+$removeAllComponents
+$httpGet[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/queue?bot_id=$botID&guild_id=$guildID]
+$var[name;$httpResult[currentTrack;name]]
+$var[url;$httpResult[currentTrack;url]]
+
+$httpPost[https://edgabot.lucnodes.es/api/Discord/audioSend.php;{
+  "token": "$getVar[TOKEN]",
+  "channelID": "$channelID",
+  "url": "$var[url]",
+  "name": "$var[name].mp3",
+  "messageID": "$messageID"
+}]
+$deleteMessage[$channelID;$var[ID]]
+$cooldown[20s;Please wait at least 20 seconds to re-download your current music.]
+$endif
+
+$if[$customID==musicAI]
+$nomention
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/list;{
+    "bot_id": "$botID",
+    "guild_id": "$guildID"
+}]
+
+$if[$httpResult[songs;0;name]==]
+$description[There is no playlist yet.]
+$else
+$var[JSON;{"$httpResult[songs;0;name]$if[$httpResult[songs;1;name]==]$else","$httpResult[songs;1;name]$endif$if[$httpResult[songs;2;name]==]$else","$httpResult[songs;2;name]$endif$if[$httpResult[songs;3;name]==]$else","$httpResult[songs;3;name]$endif$if[$httpResult[songs;4;name]==]$else","$httpResult[songs;4;name]$endif$if[$httpResult[songs;5;name]==]$else","$httpResult[songs;5;name]$endif$if[$httpResult[songs;6;name]==]$else","$httpResult[songs;6;name]$endif$if[$httpResult[songs;7;name]==]$else","$httpResult[songs;7;name]$endif$if[$httpResult[songs;8;name]==]$else","$httpResult[songs;8;name]$endif$if[$httpResult[songs;9;name]==]$else","$httpResult[songs;9;name]$endif$if[$httpResult[songs;10;name]==]$else","$httpResult[songs;10;name]$endif"}]
+$var[IDE;$sendMessage[The AI ​​is looking for a recommendation...;yes]]
+$httpGet[https://api.agatz.xyz/api/gptlogic?logic=$url[encode;This is a JSON playlist with song names: $var[JSON]. Based on the songs, recommend ONLY THE NAME OF A NEXT SONG, REMEMBER NAME ONLY, NO TEXT OTHER THAN THE NAME.]&p=$url[encode;What music should follow this list?]]
+$var[IA;$httpResult[data;result]]
+$deleteMessage[$channelID;$var[IDE]]
+
+$var[ID;$sendMessage[The AI ​​recommended `$var[IA]`, Searching for music...;yes]]
+$httpGet[http://vps-d58308d1.es.cloud.lucnodes.es:4403/get_song?name=$url[encode;$var[IA]]]
+$var[name;$httpResult[title]]
+$var[url;$httpResult[url]]
+$deleteMessage[$channelID;$var[ID]]
+
+
+$var[II;$sendMessage[Found `$var[name]`, Adding to list...;yes]]
+$httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/music;{
+  "token": "$getVar[TOKEN]",
+  "bot_id": "$botID",
+  "user_id": "$authorID",
+  "guild_id": "$guildID",
+  "url": "$var[url]",
+  "name": "$var[name]"
+}]
+$var[error;$httpResult[error]]
+$var[msg;$httpResult[message]]
+$deleteMessage[$channelID;$var[II]]
+
+$if[$httpResult[error]==Límite de canciones alcanzado]
+$description[❌ **Song limit reached**
+-# Non-Premium bots have a limit of 5 songs while Premium bots have a limit of 20.]
+$reply
+$else
+$description[Added `$var[name]` to the current playlist]
+$footer[Powered by Akiomae APIS]
+$reply
+$endif
+$endif
 $endif

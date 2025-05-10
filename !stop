@@ -9,5 +9,6 @@ $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/stop;{
 }]
 $description[Music stopped and bot successfully disconnected
 -# The playlist has been reset.]
+$setServerVar[musicMS;]
 $removeAllComponents
 $deleteMessage[$channelID;$var[ID]]

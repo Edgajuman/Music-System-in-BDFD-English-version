@@ -1,14 +1,12 @@
 $nomention
 $if[$isSlash==true]
-$var[MS;$message[canción]]
+$var[MS;$message[song]]
 $else
 $var[MS;$message]
 $endif
 
 $onlyIf[$var[MS]!=;Write the name of a song.]
-$var[ID;$sendMessage[Searching **$var[MS]**...
--# Estimated time 10 seconds.
--# Depends on video size.;yes]]
+$var[ID;$sendMessage[Searching **$var[MS]**...;yes]]
 $suppressErrors[An unexpected error occurred, please try again later.
 -# Remember to search correctly, as the YouTube API is not like the YouTube search engine.]
 
@@ -30,7 +28,7 @@ $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/music;{
 }]
 $if[$httpResult[error]==Límite de canciones alcanzado]
 $description[❌ **Song limit reached**
--# Non-premium bots have a maximum of 5 songs, and premium bots have a maximum of 20.]
+-# Non-Premium bots have a limit of 5 songs while Premium bots have a limit of 20.]
 $else
 $if[$httpResult[position]==1]
 $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/play;{
@@ -41,7 +39,7 @@ $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/play;{
 }]
 $var[conect;$httpResult[error]]
 $if[$var[conect]==El usuario no está en un canal de voz]
-$description[❌ **You are not in a voice channel**]
+$description[❌ **The user is not on a voice channel**]
 $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/stop;{
     "token": "$getVar[TOKEN]",
     "bot_id": "$botID",
@@ -49,38 +47,46 @@ $httpPost[http://vps-d58308d1.es.cloud.lucnodes.es:4402/API/stop;{
     "guild_id": "$guildID"
 }]
 $else
+$var[IMG;https://edgabot.lucnodes.es/api/image/music/?name=$url[encode;$var[name]]&autor=$url[encode;$var[author]]&image=$var[image]&time=$var[long]]
+
 $nomention
-$author[$var[author]]
-$title[Music added to queue]
-$description[* **Name:** $var[name]
-- **Author:** $var[author]
-- **Duration:** $var[long]
-- **URL:** $var[youtube]]
-$thumbnail[$var[image]]
-$image[https://edgabot.lucnodes.es/api/image/music/?name=$url[encode;$var[name]]&autor=$url[encode;$var[author]]&image=$var[image]&time=$var[long]]
-$footer[Akiomae APIS]
-$addTimestamp
-$addButton[yes;stop;;secondary;no;⏹️]
-$addButton[no;ante;;secondary;no;⏮️]
-$addButton[no;pause;;secondary;no;⏸️]
-$addButton[no;skip;;secondary;no;⏭️]
-$addButton[no;list;;secondary;no;🗒️]
-$addButton[yes;info;;secondary;no;ℹ️]
-$addButton[no;vol;;secondary;no;🔊]
+$var[musicMS;$sendEmbedMessage[$channelID;;Music added to queue;$var[youtube];* **Name:** $var[name]
+  - **Author:** $var[author]
+  - **Duration:** $var[long]
+  - **URL:** $var[youtube];#FFFF00;$var[author];;Akiomae APIS;https://edgabot.lucnodes.es/crement.png;$var[image];$var[IMG];yes;yes]]
+
+$addButton[yes;stop;Stop;danger;no;⏹️;$var[musicMS]]
+$addButton[no;ante;Previous;secondary;no;⏪;$var[musicMS]]
+$addButton[no;pause;Pause;secondary;no;⏸️;$var[musicMS]]
+$addButton[no;skip;Skip;secondary;no;⏩;$var[musicMS]]
+$addButton[no;list;List;secondary;no;🗒️;$var[musicMS]]
+$addButton[yes;info;Info;secondary;no;ℹ️;$var[musicMS]]
+$addButton[no;volu;Volume;secondary;no;🔊;$var[musicMS]]
+$addButton[no;down;Download;primary;no;📥;$var[musicMS]]
+$addButton[no;musicAI;AI;success;no;🧠;$var[musicMS]]
+$setServerVar[musicMS;$var[musicMS]]
 $reply
 $endif
 $elseif[$httpResult[position]>=2]
+$removeAllComponents[$getServerVar[musicMS]]
+$var[IMG;https://edgabot.lucnodes.es/api/image/music/?name=$url[encode;$var[name]]&autor=$url[encode;$var[author]]&image=$var[image]&time=$var[long]]
+
 $nomention
-$author[$var[author]]
-$title[Music added to queue]
-$description[* **Name:** $var[name]
-- **Author:** $var[author]
-- **Duration:** $var[long]
-- **URL:** $var[youtube]]
-$thumbnail[$var[image]]
-$image[https://edgabot.lucnodes.es/api/image/music/?name=$url[encode;$var[name]]&autor=$url[encode;$var[author]]&image=$var[image]&time=$var[long]]
-$footer[Akiomae APIS]
-$addTimestamp
+$var[musicMS2;$sendEmbedMessage[$channelID;;Music added to queue;$var[youtube];* **Name:** $var[name]
+  - **Author:** $var[author]
+  - **Duration:** $var[long]
+  - **URL:** $var[youtube];#FFFF00;$var[author];;Akiomae APIS;https://edgabot.lucnodes.es/crement.png;$var[image];$var[IMG];yes;yes]]
+
+$addButton[yes;stop;Stop;danger;no;⏹️;$var[musicMS2]]
+$addButton[no;ante;Previous;secondary;no;⏪;$var[musicMS2]]
+$addButton[no;pause;Pause;secondary;no;⏸️;$var[musicMS2]]
+$addButton[no;skip;Skip;secondary;no;⏩;$var[musicMS2]]
+$addButton[no;list;List;secondary;no;🗒️;$var[musicMS2]]
+$addButton[yes;info;Info;secondary;no;ℹ️;$var[musicMS2]]
+$addButton[no;volu;Volume;secondary;no;🔊;$var[musicMS2]]
+$addButton[no;down;Download;primary;no;📥;$var[musicMS2]]
+$addButton[no;musicAI;AI;success;no;🧠;$var[musicMS2]]
+$setServerVar[musicMS;$var[musicMS2]]
 $reply
 $endif
 $endif
